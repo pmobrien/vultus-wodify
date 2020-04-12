@@ -13,7 +13,7 @@
   <groupId>com.pmobrien</groupId>
   <artifactId>vultus-wodify-client</artifactId>
   <packaging>pom</packaging>
-  <name>Vultus Wodify Client</name>
+  <name>vultus-wodify-client</name>
 
   <properties>
     <exec-maven-plugin.version>1.4.0</exec-maven-plugin.version>

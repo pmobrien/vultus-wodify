@@ -3,20 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.pmobrien</groupId>
-    <artifactId>webserver</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>Webserver Boilerplate</name>
+  <groupId>com.pmobrien</groupId>
+  <artifactId>vultus-wodify</artifactId>
+  <packaging>pom</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Vultus Wodify</name>
 
-    <modules>
-        <module>client</module>
-        <module>server</module>
-    </modules>
+  <modules>
+    <module>client</module>
+    <module>server</module>
+  </modules>
 
-    <build>
-        <defaultGoal>clean install</defaultGoal>
-    </build>
+  <build>
+    <defaultGoal>clean install</defaultGoal>
+  </build>
 </project>

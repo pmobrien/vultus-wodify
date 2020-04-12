@@ -27,4 +27,18 @@ export class AppComponent {
       this.dtTrigger.next();
     });
   }
+
+  getPerformanceResult(performance: Performance) {
+    let result = performance.result;
+
+    if(performance.type === 'SCALED') {
+      result += ' (Scaled)';
+    } else if(performance.type === 'RX') {
+      result += ' (Rx)';
+    } else if(performance.type === 'RX_PLUS') {
+      result += ' (Rx+)';
+    }
+
+    return result;
+  }
 }

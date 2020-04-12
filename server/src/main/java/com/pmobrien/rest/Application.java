@@ -1,6 +1,9 @@
 package com.pmobrien.rest;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
+import com.google.common.io.Resources;
+import com.pmobrien.rest.csv.CsvReader;
 import com.pmobrien.rest.exceptions.UncaughtExceptionMapper;
 import com.pmobrien.rest.mappers.DefaultObjectMapper;
 import com.pmobrien.rest.neo.Sessions;
@@ -11,6 +14,7 @@ import com.pmobrien.rest.neo.pojo.Workout;
 import com.pmobrien.rest.services.impl.AthleteService;
 import com.pmobrien.rest.services.impl.HelloWorldService;
 import com.pmobrien.rest.services.impl.PerformanceService;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,6 +34,8 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 public class Application {
   
@@ -49,30 +55,32 @@ public class Application {
   }
   
   private Application() throws Exception {
-    Sessions.sessionOperation(session -> {
-      Performance performance = NeoEntityFactory.create(Performance.class)
-          .setComment("done")
-          .setDate(new Date())
-          .setPr(true)
-          .setResult("5:00")
-          .setType(Performance.Type.RX);
-      
-      Athlete athlete = NeoEntityFactory.create(Athlete.class)
-          .setWodifyId("abcd")
-          .setName("Patrick O'Brien")
-          .setEmail("obrienp@outlook.com")
-          .setPerformance(performance);
-
-      session.save(athlete);
-      
-      Workout workout = NeoEntityFactory.create(Workout.class)
-          .setDescription("21/15/9")
-          .setName("Fran")
-          .setScheme(null)
-          .setType(Workout.Type.METCON_FOR_TIME);
-      
-      session.save(workout);
-    });
+    CsvReader.loadAll();
+    
+//    Sessions.sessionOperation(session -> {
+//      Performance performance = NeoEntityFactory.create(Performance.class)
+//          .setComment("done")
+//          .setDate(new Date())
+//          .setPr(true)
+//          .setResult("5:00")
+//          .setType(Performance.Type.RX);
+//      
+//      Athlete athlete = NeoEntityFactory.create(Athlete.class)
+//          .setWodifyId("abcd")
+//          .setName("Patrick O'Brien")
+//          .setEmail("obrienp@outlook.com")
+//          .setPerformance(performance);
+//
+//      session.save(athlete);
+//      
+//      Workout workout = NeoEntityFactory.create(Workout.class)
+//          .setDescription("21/15/9")
+//          .setName("Fran")
+//          .setScheme(null)
+//          .setType(Workout.Type.METCON_FOR_TIME);
+//      
+//      session.save(workout);
+//    });
   }
   
   public static ApplicationProperties getProperties() {

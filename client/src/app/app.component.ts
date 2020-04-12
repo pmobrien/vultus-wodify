@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AppService } from './app.service';
-import { Performance } from './app.service';
+import { Performance, Workout } from './app.service';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -10,6 +10,8 @@ import { Subject } from 'rxjs';
 })
 export class AppComponent {
   dtOptions: DataTables.Settings = {};
+
+  workouts: Workout[] = [];
   performances: Performance[] = [];
 
   dtTrigger: Subject<any> = new Subject();
@@ -21,6 +23,10 @@ export class AppComponent {
       pagingType: 'full_numbers',
       pageLength: 25
     };
+
+    this.service.getAllWorkouts().subscribe(workouts => {
+      this.workouts = workouts;
+    });
 
     this.service.getAllPerformances().subscribe(performances => {
       this.performances = performances;

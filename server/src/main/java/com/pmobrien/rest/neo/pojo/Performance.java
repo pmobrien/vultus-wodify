@@ -24,6 +24,9 @@ public class Performance extends NeoEntity {
   @Relationship(type = "COMPLETED", direction = Relationship.INCOMING)
   private Athlete athlete;
   
+  @Relationship(type = "INSTANCE_OF", direction = Relationship.OUTGOING)
+  private Workout workout;
+  
   public Performance() {}
 
   public Boolean isPr() {
@@ -77,6 +80,15 @@ public class Performance extends NeoEntity {
 
   public Performance setAthlete(Athlete athlete) {
     this.athlete = athlete;
+    return this;
+  }
+
+  public Workout getWorkout() {
+    return workout;
+  }
+
+  public Performance setWorkout(Workout workout) {
+    this.workout = workout;
     return this;
   }
   

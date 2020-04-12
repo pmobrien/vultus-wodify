@@ -1,24 +1,16 @@
 package com.pmobrien.rest;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
-import com.google.common.io.Resources;
 import com.pmobrien.rest.csv.CsvReader;
 import com.pmobrien.rest.exceptions.UncaughtExceptionMapper;
 import com.pmobrien.rest.mappers.DefaultObjectMapper;
-import com.pmobrien.rest.neo.Sessions;
-import com.pmobrien.rest.neo.pojo.Athlete;
-import com.pmobrien.rest.neo.pojo.NeoEntityFactory;
-import com.pmobrien.rest.neo.pojo.Performance;
-import com.pmobrien.rest.neo.pojo.Workout;
 import com.pmobrien.rest.services.impl.AthleteService;
 import com.pmobrien.rest.services.impl.HelloWorldService;
 import com.pmobrien.rest.services.impl.PerformanceService;
-import java.io.IOException;
+import com.pmobrien.rest.services.impl.WorkoutService;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
 import org.eclipse.jetty.server.ForwardedRequestCustomizer;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -34,8 +26,6 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 
 public class Application {
   
@@ -124,6 +114,7 @@ public class Application {
                     .register(HelloWorldService.class)
                     .register(AthleteService.class)
                     .register(PerformanceService.class)
+                    .register(WorkoutService.class)
                     .register(DefaultObjectMapper.class)
                     .register(UncaughtExceptionMapper.class)
             )

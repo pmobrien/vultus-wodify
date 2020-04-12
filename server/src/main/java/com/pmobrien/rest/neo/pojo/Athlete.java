@@ -67,17 +67,23 @@ public class Athlete extends NeoEntity {
     public void serialize(Athlete athlete, JsonGenerator generator, SerializerProvider provider) throws IOException {
       generator.writeStartObject();
       
+      writeFields(athlete, generator);
+      
+      if(athlete.getPerformance() != null) {
+        generator.writeFieldName("performance");
+        generator.writeStartObject();
+        new Performance.Serializer().writeFields(athlete.getPerformance(), generator);
+        generator.writeEndObject();
+      }
+      
+      generator.writeEndObject();
+    }
+    
+    protected void writeFields(Athlete athlete, JsonGenerator generator) throws IOException {
       generator.writeStringField("uuid", athlete.getUuid().toString());
       generator.writeStringField("wodifyId", athlete.getWodifyId());
       generator.writeStringField("name", athlete.getName());
       generator.writeStringField("email", athlete.getEmail());
-      
-      if(athlete.getPerformance() != null) {
-        generator.writeFieldName("performance");
-        new Performance.Serializer().serialize(athlete.getPerformance(), generator, provider);
-      }
-      
-      generator.writeEndObject();
     }
   }
 }

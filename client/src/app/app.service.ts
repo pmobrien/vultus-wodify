@@ -14,6 +14,10 @@ export class AppService {
   getAllAthletes(): Observable<Athlete[]> {
     return this.http.get<Athlete[]>('/api/athletes');
   }
+
+  getAllPerformances(): Observable<Performance[]> {
+    return this.http.get<Performance[]>('/api/performances');
+  }
 }
 
 export interface HelloWorld {
@@ -35,4 +39,5 @@ export interface Performance {
   result: string;
   type: string;
   date: Date;
+  athlete: Athlete;
 }

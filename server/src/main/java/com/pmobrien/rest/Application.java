@@ -10,6 +10,7 @@ import com.pmobrien.rest.neo.pojo.Performance;
 import com.pmobrien.rest.neo.pojo.Workout;
 import com.pmobrien.rest.services.impl.AthleteService;
 import com.pmobrien.rest.services.impl.HelloWorldService;
+import com.pmobrien.rest.services.impl.PerformanceService;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -114,6 +115,7 @@ public class Application {
                 new ResourceConfig()
                     .register(HelloWorldService.class)
                     .register(AthleteService.class)
+                    .register(PerformanceService.class)
                     .register(DefaultObjectMapper.class)
                     .register(UncaughtExceptionMapper.class)
             )

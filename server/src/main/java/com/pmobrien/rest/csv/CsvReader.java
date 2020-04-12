@@ -5,9 +5,11 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import com.pmobrien.rest.neo.Sessions;
 import com.pmobrien.rest.neo.accessors.AthleteAccessor;
+import com.pmobrien.rest.neo.accessors.WorkoutAccessor;
 import com.pmobrien.rest.neo.pojo.Athlete;
 import com.pmobrien.rest.neo.pojo.NeoEntityFactory;
 import com.pmobrien.rest.neo.pojo.Performance;
+import com.pmobrien.rest.neo.pojo.Workout;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,15 +56,25 @@ public class CsvReader {
   
   private static void saveRow(MetconRow row) {
     Athlete a = new AthleteAccessor().getAthleteByName(row.athleteName);
+    Workout w = new WorkoutAccessor().getWorkoutByName(row.workoutName);
     
     Sessions.sessionOperation(session -> {
       try {
+        // TODO cache workouts/athletes?
+        
         Athlete athlete = a == null
             ? NeoEntityFactory.create(Athlete.class).setName(row.athleteName)
             : a;
+        
+        Workout workout = w == null
+            ? NeoEntityFactory.create(Workout.class)
+                .setName(row.workoutName)
+                .setType("Time".equals(row.workoutScheme) ? Workout.Type.METCON_FOR_TIME : null)
+            : w;
 
         Performance performance = NeoEntityFactory.create(Performance.class)
             .setAthlete(athlete)
+            .setWorkout(workout)
             .setComment(row.comment)
             .setDate(DATE_FORMATTER.parse(row.date))
             .setPr(Boolean.valueOf(row.pr))
@@ -86,9 +98,9 @@ public class CsvReader {
     
     private String date;
     private String athleteName;
-    private String scheme;
+    private String workoutScheme;
     private String result;
-    private String name;
+    private String workoutName;
     private String pr;
     private String comment;
     private String rx;
@@ -100,9 +112,9 @@ public class CsvReader {
       
         date = items[0];
         athleteName = items[2];
-        scheme = items[8];
+        workoutScheme = items[8];
         result = items[9];
-        name = items[10];
+        workoutName = items[10];
         pr = items[11];
         comment = items[12];
         rx = items[13];

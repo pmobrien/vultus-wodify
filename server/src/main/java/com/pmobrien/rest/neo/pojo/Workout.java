@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
+import org.neo4j.ogm.annotation.Relationship;
 
 public class Workout extends NeoEntity {
 
@@ -17,6 +18,9 @@ public class Workout extends NeoEntity {
   private String name;
   private String scheme;
   private String description;
+  
+  @Relationship(type = "INSTANCE_OF", direction = Relationship.INCOMING)
+  private Performance performance;
   
   public Workout() {}
 
@@ -53,6 +57,15 @@ public class Workout extends NeoEntity {
 
   public Workout setDescription(String description) {
     this.description = description;
+    return this;
+  }
+
+  public Performance getPerformance() {
+    return performance;
+  }
+
+  public Workout setPerformance(Performance performance) {
+    this.performance = performance;
     return this;
   }
   

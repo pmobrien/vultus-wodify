@@ -16,16 +16,18 @@ public class HelloWorld extends NeoEntity {
     return hello;
   }
 
-  public void setHello(String hello) {
+  public HelloWorld setHello(String hello) {
     this.hello = hello;
+    return this;
   }
 
   public String getWorld() {
     return world;
   }
 
-  public void setWorld(String world) {
+  public HelloWorld setWorld(String world) {
     this.world = world;
+    return this;
   }
   
   public static class Serializer extends StdSerializer<HelloWorld> {

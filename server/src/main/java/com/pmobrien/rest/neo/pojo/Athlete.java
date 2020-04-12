@@ -17,24 +17,27 @@ public class Athlete extends NeoEntity {
     return wodifyId;
   }
 
-  public void setWodifyId(String wodifyId) {
+  public Athlete setWodifyId(String wodifyId) {
     this.wodifyId = wodifyId;
+    return this;
   }
 
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
+  public Athlete setName(String name) {
     this.name = name;
+    return this;
   }
 
   public String getEmail() {
     return email;
   }
 
-  public void setEmail(String email) {
+  public Athlete setEmail(String email) {
     this.email = email;
+    return this;
   }
   
   public static class Serializer extends StdSerializer<Athlete> {

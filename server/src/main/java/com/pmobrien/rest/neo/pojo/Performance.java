@@ -26,40 +26,45 @@ public class Performance extends NeoEntity {
     return pr;
   }
 
-  public void setPr(Boolean pr) {
+  public Performance setPr(Boolean pr) {
     this.pr = pr;
+    return this;
   }
 
   public String getComment() {
     return comment;
   }
 
-  public void setComment(String comment) {
+  public Performance setComment(String comment) {
     this.comment = comment;
+    return this;
   }
 
   public String getResult() {
     return result;
   }
 
-  public void setResult(String result) {
+  public Performance setResult(String result) {
     this.result = result;
+    return this;
   }
 
   public Type getType() {
     return type;
   }
 
-  public void setType(Type type) {
+  public Performance setType(Type type) {
     this.type = type;
+    return this;
   }
 
   public Date getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public Performance setDate(Date date) {
     this.date = date;
+    return this;
   }
   
   public static class Serializer extends StdSerializer<Performance> {

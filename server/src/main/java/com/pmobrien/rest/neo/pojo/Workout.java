@@ -24,32 +24,36 @@ public class Workout extends NeoEntity {
     return type;
   }
 
-  public void setType(Type type) {
+  public Workout setType(Type type) {
     this.type = type;
+    return this;
   }
 
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
+  public Workout setName(String name) {
     this.name = name;
+    return this;
   }
 
   public String getScheme() {
     return scheme;
   }
 
-  public void setScheme(String scheme) {
+  public Workout setScheme(String scheme) {
     this.scheme = scheme;
+    return this;
   }
 
   public String getDescription() {
     return description;
   }
 
-  public void setDescription(String description) {
+  public Workout setDescription(String description) {
     this.description = description;
+    return this;
   }
   
   public static class Serializer extends StdSerializer<Workout> {

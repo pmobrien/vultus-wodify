@@ -4,11 +4,15 @@ import com.google.common.base.Strings;
 import com.pmobrien.rest.exceptions.UncaughtExceptionMapper;
 import com.pmobrien.rest.mappers.DefaultObjectMapper;
 import com.pmobrien.rest.neo.Sessions;
-import com.pmobrien.rest.neo.pojo.HelloWorld;
+import com.pmobrien.rest.neo.pojo.Athlete;
+import com.pmobrien.rest.neo.pojo.NeoEntityFactory;
+import com.pmobrien.rest.neo.pojo.Performance;
+import com.pmobrien.rest.neo.pojo.Workout;
 import com.pmobrien.rest.services.impl.HelloWorldService;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import org.eclipse.jetty.server.ForwardedRequestCustomizer;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -43,7 +47,31 @@ public class Application {
   }
   
   private Application() throws Exception {
-    Sessions.sessionOperation(session -> session.save(new HelloWorld()));
+    Sessions.sessionOperation(session -> {
+      Athlete athlete = NeoEntityFactory.create(Athlete.class)
+          .setWodifyId("abcd")
+          .setName("Patrick O'Brien")
+          .setEmail("obrienp@outlook.com");
+
+      session.save(athlete);
+      
+      Workout workout = NeoEntityFactory.create(Workout.class)
+          .setDescription("21/15/9")
+          .setName("Fran")
+          .setScheme(null)
+          .setType(Workout.Type.METCON_FOR_TIME);
+      
+      session.save(workout);
+      
+      Performance performance = NeoEntityFactory.create(Performance.class)
+          .setComment("done")
+          .setDate(new Date())
+          .setPr(true)
+          .setResult("5:00")
+          .setType(Performance.Type.RX);
+      
+      session.save(performance);
+    });
   }
   
   public static ApplicationProperties getProperties() {

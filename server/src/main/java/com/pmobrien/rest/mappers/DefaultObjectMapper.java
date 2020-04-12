@@ -1,5 +1,6 @@
 package com.pmobrien.rest.mappers;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -26,6 +27,7 @@ public class DefaultObjectMapper implements ContextResolver<ObjectMapper> {
                 .addSerializer(Athlete.class, new Athlete.Serializer())
                 .addSerializer(Performance.class, new Performance.Serializer())
                 .addSerializer(Workout.class, new Workout.Serializer())
-        );
+        )
+        .setSerializationInclusion(JsonInclude.Include.NON_NULL);
   }
 }

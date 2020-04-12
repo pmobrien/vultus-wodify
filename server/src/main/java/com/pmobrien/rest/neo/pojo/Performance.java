@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.util.Date;
+import org.neo4j.ogm.annotation.Relationship;
 
 public class Performance extends NeoEntity {
 
@@ -19,6 +20,9 @@ public class Performance extends NeoEntity {
   private String result;
   private Type type;
   private Date date;
+  
+  @Relationship(type = "COMPLETED", direction = Relationship.INCOMING)
+  private Athlete athlete;
   
   public Performance() {}
 
@@ -66,6 +70,15 @@ public class Performance extends NeoEntity {
     this.date = date;
     return this;
   }
+
+  public Athlete getAthlete() {
+    return athlete;
+  }
+
+  public Performance setAthlete(Athlete athlete) {
+    this.athlete = athlete;
+    return this;
+  }
   
   public static class Serializer extends StdSerializer<Performance> {
 
@@ -81,6 +94,7 @@ public class Performance extends NeoEntity {
     public void serialize(Performance performance, JsonGenerator generator, SerializerProvider provider) throws IOException {
       generator.writeStartObject();
       
+      generator.writeStringField("uuid", performance.getUuid().toString());
       generator.writeBooleanField("pr", performance.isPr());
       generator.writeStringField("comment", performance.getComment());
       generator.writeStringField("result", performance.getResult());

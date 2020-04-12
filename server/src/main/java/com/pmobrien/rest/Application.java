@@ -8,6 +8,7 @@ import com.pmobrien.rest.neo.pojo.Athlete;
 import com.pmobrien.rest.neo.pojo.NeoEntityFactory;
 import com.pmobrien.rest.neo.pojo.Performance;
 import com.pmobrien.rest.neo.pojo.Workout;
+import com.pmobrien.rest.services.impl.AthleteService;
 import com.pmobrien.rest.services.impl.HelloWorldService;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -48,10 +49,18 @@ public class Application {
   
   private Application() throws Exception {
     Sessions.sessionOperation(session -> {
+      Performance performance = NeoEntityFactory.create(Performance.class)
+          .setComment("done")
+          .setDate(new Date())
+          .setPr(true)
+          .setResult("5:00")
+          .setType(Performance.Type.RX);
+      
       Athlete athlete = NeoEntityFactory.create(Athlete.class)
           .setWodifyId("abcd")
           .setName("Patrick O'Brien")
-          .setEmail("obrienp@outlook.com");
+          .setEmail("obrienp@outlook.com")
+          .setPerformance(performance);
 
       session.save(athlete);
       
@@ -62,15 +71,6 @@ public class Application {
           .setType(Workout.Type.METCON_FOR_TIME);
       
       session.save(workout);
-      
-      Performance performance = NeoEntityFactory.create(Performance.class)
-          .setComment("done")
-          .setDate(new Date())
-          .setPr(true)
-          .setResult("5:00")
-          .setType(Performance.Type.RX);
-      
-      session.save(performance);
     });
   }
   
@@ -113,6 +113,7 @@ public class Application {
             new ServletContainer(
                 new ResourceConfig()
                     .register(HelloWorldService.class)
+                    .register(AthleteService.class)
                     .register(DefaultObjectMapper.class)
                     .register(UncaughtExceptionMapper.class)
             )

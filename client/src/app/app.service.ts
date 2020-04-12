@@ -10,9 +10,29 @@ export class AppService {
   getHelloWorld(): Observable<HelloWorld> {
     return this.http.get<HelloWorld>('/api/hello-world');
   }
+
+  getAllAthletes(): Observable<Athlete[]> {
+    return this.http.get<Athlete[]>('/api/athletes');
+  }
 }
 
 export interface HelloWorld {
   hello: string;
   world: string;
+}
+
+export interface Athlete {
+  uuid: string;
+  wodifyId: string;
+  name: string;
+  performance: Performance;
+}
+
+export interface Performance {
+  uuid: string;
+  pr: boolean;
+  comment: string;
+  result: string;
+  type: string;
+  date: Date;
 }

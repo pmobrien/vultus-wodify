@@ -4,12 +4,16 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
+import org.neo4j.ogm.annotation.Relationship;
 
 public class Athlete extends NeoEntity {
 
   private String wodifyId;
   private String name;
   private String email;
+  
+  @Relationship(type = "COMPLETED", direction = Relationship.OUTGOING)
+  private Performance performance;
   
   public Athlete() {}
 
@@ -39,6 +43,15 @@ public class Athlete extends NeoEntity {
     this.email = email;
     return this;
   }
+
+  public Performance getPerformance() {
+    return performance;
+  }
+
+  public Athlete setPerformance(Performance performance) {
+    this.performance = performance;
+    return this;
+  }
   
   public static class Serializer extends StdSerializer<Athlete> {
 
@@ -58,6 +71,11 @@ public class Athlete extends NeoEntity {
       generator.writeStringField("wodifyId", athlete.getWodifyId());
       generator.writeStringField("name", athlete.getName());
       generator.writeStringField("email", athlete.getEmail());
+      
+      if(athlete.getPerformance() != null) {
+        generator.writeFieldName("performance");
+        new Performance.Serializer().serialize(athlete.getPerformance(), generator, provider);
+      }
       
       generator.writeEndObject();
     }

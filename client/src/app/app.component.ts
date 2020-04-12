@@ -11,6 +11,6 @@ export class AppComponent {
   data: string = '';
 
   constructor(private service: AppService) {
-    service.getHelloWorld().subscribe(result => this.data = result.hello + ' ' + result.world);
+    service.getAllAthletes().subscribe(athletes => this.data = JSON.stringify(athletes[0]));
   }
 }

@@ -2,6 +2,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { DataTablesModule } from 'angular-datatables';
+
 import { AppService } from './app.service';
 import { AppComponent } from './app.component';
 
@@ -11,7 +13,8 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    DataTablesModule
   ],
   providers: [
     AppService

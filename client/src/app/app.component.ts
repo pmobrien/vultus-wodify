@@ -11,6 +11,12 @@ export class AppComponent {
   data: string = '';
 
   constructor(private service: AppService) {
-    service.getAllPerformances().subscribe(performances => this.data = JSON.stringify(performances[0]));
+    service.getAllPerformances().subscribe(performances => {
+      let val = '';
+
+      performances.map(p => val += (JSON.stringify(p) + "\n"))
+
+      this.data = val;
+    });
   }
 }

@@ -15,9 +15,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let performance of performances">
-      <td>{{ performance.date }}</td>
+      <td>{{ performance.date | date:'yyyy/MM/dd' }}</td>
       <td>{{ performance.athlete.name }}</td>
-      <td>{{ performance.result }}</td>
+      <td>{{ getPerformanceResult(performance) }}</td>
       <td>{{ performance.comment }}</td>
     </tr>
   </tbody>

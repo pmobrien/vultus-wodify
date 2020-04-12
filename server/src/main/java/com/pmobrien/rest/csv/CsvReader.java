@@ -21,7 +21,7 @@ import org.reflections.scanners.ResourcesScanner;
 public class CsvReader {
 
   private static final String RESOURCE_PACKAGE = "com.pmobrien.rest.conf.metcons";
-  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd/MM/yyyy");
+  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("MM/dd/yyyy");
   
   private CsvReader() {}
   

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.pmobrien.rest.neo.pojo.HelloWorld;
+import com.pmobrien.rest.neo.pojo.Athlete;
+import com.pmobrien.rest.neo.pojo.Performance;
+import com.pmobrien.rest.neo.pojo.Workout;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
@@ -21,7 +23,9 @@ public class DefaultObjectMapper implements ContextResolver<ObjectMapper> {
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         .registerModule(
             new SimpleModule()
-                .addSerializer(HelloWorld.class, new HelloWorld.Serializer())
+                .addSerializer(Athlete.class, new Athlete.Serializer())
+                .addSerializer(Performance.class, new Performance.Serializer())
+                .addSerializer(Workout.class, new Workout.Serializer())
         );
   }
 }

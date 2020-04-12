@@ -4,19 +4,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import java.util.UUID;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
-public class NeoEntity {
+public abstract class NeoEntity {
 
   @Id
   @GeneratedValue
-  private Long id;
+  private UUID uuid;
 
-  public Long getId() {
-    return id;
+  public UUID getUuid() {
+    return uuid;
+  }
+  
+  protected void setUuid(UUID uuid) {
+    this.uuid = uuid;
   }
   
   public String toJson() {

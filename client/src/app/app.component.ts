@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AppService } from './app.service';
+import { Performance } from './app.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,16 +9,22 @@ import { AppService } from './app.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'hello-world';
-  data: string = '';
+  dtOptions: DataTables.Settings = {};
+  performances: Performance[] = [];
 
-  constructor(private service: AppService) {
-    service.getAllPerformances().subscribe(performances => {
-      let val = '';
+  dtTrigger: Subject<any> = new Subject();
 
-      performances.map(p => val += (JSON.stringify(p) + "\n"))
+  constructor(private service: AppService) {}
 
-      this.data = val;
+  ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 25
+    };
+
+    this.service.getAllPerformances().subscribe(performances => {
+      this.performances = performances;
+      this.dtTrigger.next();
     });
   }
 }

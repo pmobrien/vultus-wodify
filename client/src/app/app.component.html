@@ -1,12 +1,22 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div class="center-text">
   <h1>
-    {{ title }}
+    Vultus Wodify Results
   </h1>
 </div>
-<div class="center-text">
-  Response from API:
-</div>
-<div class="center-text">
-  {{ data }}
-</div>
+
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Athlete</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let performance of performances">
+      <td>{{ performance.date }}</td>
+      <td>{{ performance.athlete.name }}</td>
+      <td>{{ performance.result }}</td>
+    </tr>
+  </tbody>
+</table>

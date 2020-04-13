@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.pmobrien.rest.csv.CsvReader;
 import com.pmobrien.rest.exceptions.UncaughtExceptionMapper;
 import com.pmobrien.rest.mappers.DefaultObjectMapper;
+import com.pmobrien.rest.neo.NeoConnector;
 import com.pmobrien.rest.services.impl.AthleteService;
 import com.pmobrien.rest.services.impl.HelloWorldService;
 import com.pmobrien.rest.services.impl.PerformanceService;
@@ -45,32 +46,10 @@ public class Application {
   }
   
   private Application() throws Exception {
-    CsvReader.loadAll();
-    
-//    Sessions.sessionOperation(session -> {
-//      Performance performance = NeoEntityFactory.create(Performance.class)
-//          .setComment("done")
-//          .setDate(new Date())
-//          .setPr(true)
-//          .setResult("5:00")
-//          .setType(Performance.Type.RX);
-//      
-//      Athlete athlete = NeoEntityFactory.create(Athlete.class)
-//          .setWodifyId("abcd")
-//          .setName("Patrick O'Brien")
-//          .setEmail("obrienp@outlook.com")
-//          .setPerformance(performance);
-//
-//      session.save(athlete);
-//      
-//      Workout workout = NeoEntityFactory.create(Workout.class)
-//          .setDescription("21/15/9")
-//          .setName("Fran")
-//          .setScheme(null)
-//          .setType(Workout.Type.METCON_FOR_TIME);
-//      
-//      session.save(workout);
-//    });
+    if(Application.getProperties().getConfiguration().getNeo().isInitializeFromCsv()) {
+      NeoConnector.getInstance().dropDatabase();  // TODO merge in new files rather than just dropping everything
+      CsvReader.loadAll();
+    }
   }
   
   public static ApplicationProperties getProperties() {

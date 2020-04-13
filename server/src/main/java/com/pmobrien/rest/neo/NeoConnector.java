@@ -2,6 +2,7 @@ package com.pmobrien.rest.neo;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.Maps;
 import com.pmobrien.rest.Application;
 import java.io.File;
 import java.util.function.Supplier;
@@ -20,6 +21,10 @@ public class NeoConnector {
   private static final Supplier<SessionFactory> SESSION_FACTORY = Suppliers.memoize(() -> initializeSessionFactory());
   
   private NeoConnector() {}
+  
+  public void dropDatabase() {
+    Sessions.sessionOperation(session -> session.query(Queries.DELETE_ALL, Maps.newHashMap()));
+  }
   
   public static NeoConnector getInstance() {
     return INSTANCE;
@@ -53,5 +58,10 @@ public class NeoConnector {
     }
     
     return Application.getProperties().getConfiguration().getNeo().getStorage();
+  }
+  
+  private static class Queries {
+
+    private static final String DELETE_ALL = "MATCH (n) DETACH DELETE n";
   }
 }

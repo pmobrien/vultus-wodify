@@ -118,6 +118,7 @@ public class ApplicationProperties {
       private String storage;
       private Boolean boltEnabled;
       private String boltUri;
+      private Boolean initializeFromCsv;
       
       public Neo() {}
 
@@ -143,6 +144,14 @@ public class ApplicationProperties {
 
       public void setBoltUri(String boltUri) {
         this.boltUri = boltUri;
+      }
+
+      public Boolean isInitializeFromCsv() {
+        return initializeFromCsv;
+      }
+
+      public void setInitializeFromCsv(Boolean initializeFromCsv) {
+        this.initializeFromCsv = initializeFromCsv;
       }
     }
   }

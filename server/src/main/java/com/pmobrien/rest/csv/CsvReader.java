@@ -45,6 +45,8 @@ public class CsvReader {
     List<MetconRow> rows = Lists.newArrayList();
     
     try(CSVReader reader = new CSVReader(new InputStreamReader(csv))) {
+      reader.readNext();  // throw out the first line (headers)
+      
       String[] values;
       while((values = reader.readNext()) != null) {
         rows.add(new MetconRow(String.join(",", values)));

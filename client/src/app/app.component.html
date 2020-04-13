@@ -5,9 +5,8 @@
 </div>
 
 <div class="center-text">
-  <select [ngModel]="workouts">
-    <option *ngFor="let workout of workouts"
-       [value]="workout.name">
+  <select ng-model="workouts" (change)="onWorkoutChange($event.target.value)">
+    <option *ngFor="let workout of workouts" [value]="workout.uuid">
        {{workout.name}}
     </option>
   </select>

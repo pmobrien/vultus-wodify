@@ -19,6 +19,10 @@ export class AppService {
     return this.http.get<Performance[]>('/api/performances');
   }
 
+  getPerformancesByWorkoutUuid(uuid: string): Observable<Performance[]> {
+    return this.http.get<Performance[]>('/api/performances?workoutUuid=' + uuid);
+  }
+
   getAllWorkouts(): Observable<Workout[]> {
     return this.http.get<Workout[]>('/api/workouts');
   }
@@ -47,6 +51,7 @@ export interface Performance {
 }
 
 export interface Workout {
+  uuid: string;
   type?: string;
   name?: string;
   scheme?: string;

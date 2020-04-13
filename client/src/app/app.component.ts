@@ -10,11 +10,12 @@ import { Subject } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
   @ViewChild(DataTableDirective, {static: false})
   dtElement: DataTableDirective;
 
   dtOptions: DataTables.Settings = {};
-
+  
   workouts: Workout[] = [];
   performances: Performance[] = [];
 
@@ -30,6 +31,16 @@ export class AppComponent {
 
     this.service.getAllWorkouts().subscribe(workouts => {
       this.workouts = workouts;
+
+      this.workouts.sort((one: Workout, two: Workout) => {
+        if(one.name < two.name) {
+          return -1;
+        } else if(one.name > two.name) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
 
       this.service.getPerformancesByWorkoutUuid(workouts[0].uuid).subscribe(performances => {
         this.performances = performances;
@@ -48,9 +59,7 @@ export class AppComponent {
   getPerformanceResult(performance: Performance): string {
     let result = performance.result;
 
-    if(performance.type === 'SCALED') {
-      result += ' (Scaled)';
-    } else if(performance.type === 'RX') {
+    if(performance.type === 'RX') {
       result += ' (Rx)';
     } else if(performance.type === 'RX_PLUS') {
       result += ' (Rx+)';

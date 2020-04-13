@@ -84,7 +84,7 @@ public class Workout extends NeoEntity {
       generator.writeStartObject();
       
       generator.writeStringField("uuid", workout.getUuid().toString());
-      generator.writeStringField("type", workout.getType().name());
+      generator.writeStringField("type", workout.getType() == null ? null : workout.getType().name());
       generator.writeStringField("name", workout.getName());
       generator.writeStringField("scheme", workout.getScheme());
       generator.writeStringField("description", workout.getDescription());

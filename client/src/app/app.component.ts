@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
 import { AppService } from './app.service';
 import { Performance, Workout } from './app.service';
 import { Subject } from 'rxjs';
@@ -9,6 +10,9 @@ import { Subject } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement: DataTableDirective;
+
   dtOptions: DataTables.Settings = {};
 
   workouts: Workout[] = [];
@@ -26,15 +30,22 @@ export class AppComponent {
 
     this.service.getAllWorkouts().subscribe(workouts => {
       this.workouts = workouts;
-    });
 
-    this.service.getAllPerformances().subscribe(performances => {
-      this.performances = performances;
-      this.dtTrigger.next();
+      this.service.getPerformancesByWorkoutUuid(workouts[0].uuid).subscribe(performances => {
+        this.performances = performances;
+        this.dtTrigger.next();
+      });
     });
   }
 
-  getPerformanceResult(performance: Performance) {
+  onWorkoutChange(uuid: string): void {
+    this.service.getPerformancesByWorkoutUuid(uuid).subscribe(performances => {
+      this.performances = performances;
+      this.rerender();
+    });
+  }
+
+  getPerformanceResult(performance: Performance): string {
     let result = performance.result;
 
     if(performance.type === 'SCALED') {
@@ -46,5 +57,12 @@ export class AppComponent {
     }
 
     return result;
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.destroy();
+      this.dtTrigger.next();
+    });
   }
 }

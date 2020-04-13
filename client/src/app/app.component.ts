@@ -26,7 +26,7 @@ export class AppComponent {
   ngOnInit(): void {
     this.dtOptions = {
       pagingType: 'full_numbers',
-      pageLength: 25
+      pageLength: 15
     };
 
     this.service.getAllWorkouts().subscribe(workouts => {

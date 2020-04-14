@@ -20,7 +20,7 @@ export class AppService {
   }
 
   getPerformancesByWorkoutUuid(uuid: string): Observable<Performance[]> {
-    return this.http.get<Performance[]>('/api/performances?workoutUuid=' + uuid);
+    return this.http.get<Performance[]>('/api/workouts/' + uuid + '/performances');
   }
 
   getAllWorkouts(): Observable<Workout[]> {

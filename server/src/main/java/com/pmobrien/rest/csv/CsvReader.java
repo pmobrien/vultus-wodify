@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
@@ -32,7 +33,7 @@ public class CsvReader {
     reflections.getResources(name -> {
       try {
         load(CsvReader.class.getClassLoader().getResourceAsStream(RESOURCE_PACKAGE.replace(".", "/") + "/" + name))
-            .forEach(row -> saveRow(row));
+            .forEach(row -> saveRow(row, StringUtils.substringBeforeLast(name, ".")));
       } catch(IOException | CsvValidationException ex) {
         ex.printStackTrace(System.out);
       }
@@ -56,9 +57,9 @@ public class CsvReader {
     return rows;
   }
   
-  private static void saveRow(MetconRow row) {
+  private static void saveRow(MetconRow row, String workoutName) {
     Athlete a = new AthleteAccessor().getAthleteByName(row.athleteName);
-    Workout w = new WorkoutAccessor().getWorkoutByName(row.workoutName);
+    Workout w = new WorkoutAccessor().getWorkoutByName(workoutName);
     
     Sessions.sessionOperation(session -> {
       try {
@@ -70,7 +71,7 @@ public class CsvReader {
         
         Workout workout = w == null
             ? NeoEntityFactory.create(Workout.class)
-                .setName(row.workoutName)
+                .setName(workoutName)  // not using row.workoutName since it is poorly formatted a lot of time
                 .setType("Time".equals(row.workoutScheme) ? Workout.Type.METCON_FOR_TIME : null)
             : w;
 

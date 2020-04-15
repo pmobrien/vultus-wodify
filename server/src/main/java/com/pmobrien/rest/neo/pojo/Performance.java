@@ -115,6 +115,13 @@ public class Performance extends NeoEntity {
         generator.writeEndObject();
       }
       
+      if(performance.getWorkout() != null) {
+        generator.writeFieldName("workout");
+        generator.writeStartObject();
+        new Workout.Serializer().writeFields(performance.getWorkout(), generator);
+        generator.writeEndObject();
+      }
+      
       generator.writeEndObject();
     }
     

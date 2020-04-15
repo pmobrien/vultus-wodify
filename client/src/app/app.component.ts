@@ -26,6 +26,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.dtOptions = {
+      lengthChange: false,
       columnDefs: [{
         targets: 2,
         type: 'numeric',

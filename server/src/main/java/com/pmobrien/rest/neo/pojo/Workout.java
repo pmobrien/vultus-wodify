@@ -3,15 +3,39 @@ package com.pmobrien.rest.neo.pojo;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.base.Strings;
 import java.io.IOException;
 import org.neo4j.ogm.annotation.Relationship;
 
 public class Workout extends NeoEntity {
-
+  
   public enum Type {
-    LIFT,
-    METCON_FOR_TIME,
-    METCON_FOR_ROUNDS;
+    AMRAP_REPS("AMRAP - Reps"),
+    AMRAP_ROUNDS_AND_REPS("AMRAP - Rounds and Reps"),
+    EACH_ROUND_FOR_REPS("Each Round for For Reps"),
+    EACH_ROUND_FOR_TIME("Each Round for For Time"),
+    TIME("Time"),
+    WEIGHT("Weight");
+    
+    private final String value;
+    
+    Type(String value) {
+      this.value = value;
+    }
+    
+    public static Type parse(String string) {
+      if(Strings.isNullOrEmpty(string)) {
+        return null;
+      }
+      
+      for(Type type : Type.values()) {
+        if(type.value.equals(string)) {
+          return type;
+        }
+      }
+      
+      throw new RuntimeException(String.format("Unknow Workout.Type: %s", string));
+    }
   }
   
   private Type type;

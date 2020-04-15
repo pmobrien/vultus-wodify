@@ -72,7 +72,7 @@ public class CsvReader {
         Workout workout = w == null
             ? NeoEntityFactory.create(Workout.class)
                 .setName(workoutName)  // not using row.workoutName since it is poorly formatted a lot of time
-                .setType("Time".equals(row.workoutScheme) ? Workout.Type.METCON_FOR_TIME : null)
+                .setType(Workout.Type.parse(row.workoutScheme))
             : w;
 
         Performance performance = NeoEntityFactory.create(Performance.class)

@@ -43,6 +43,8 @@ export interface Performance {
   type: string;
   date: Date;
   athlete: Athlete;
+  workout: Workout;
+  sortHack: string;   // the most appropriate name...
 }
 
 export interface Workout {

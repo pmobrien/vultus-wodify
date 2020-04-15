@@ -9,7 +9,7 @@
 <div class="center-text">
   <select ng-model="workouts" (change)="onWorkoutChange($event.target.value)">
     <option *ngFor="let workout of workouts" [value]="workout.uuid">
-       {{workout.name}}
+      {{workout.name}}
     </option>
   </select>
 </div>
@@ -27,7 +27,7 @@
     <tr *ngFor="let performance of performances">
       <td>{{ performance.date | date:'yyyy/MM/dd' }}</td>
       <td>{{ performance.athlete.name }}</td>
-      <td>{{ getPerformanceResult(performance) }}</td>
+      <td>{{ performance.sortHack }}</td>
       <td>{{ performance.comment }}</td>
     </tr>
   </tbody>

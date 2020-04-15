@@ -7,10 +7,6 @@ export class AppService {
 
   constructor(private http: HttpClient) {}
 
-  getHelloWorld(): Observable<HelloWorld> {
-    return this.http.get<HelloWorld>('/api/hello-world');
-  }
-
   getAllAthletes(): Observable<Athlete[]> {
     return this.http.get<Athlete[]>('/api/athletes');
   }
@@ -30,11 +26,6 @@ export class AppService {
   getVersionNumber(): Observable<Version> {
     return this.http.get<Version>('/api/version');
   }
-}
-
-export interface HelloWorld {
-  hello: string;
-  world: string;
 }
 
 export interface Athlete {

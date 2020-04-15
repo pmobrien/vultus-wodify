@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { AppService } from './app.service';
 import { Performance, Workout } from './app.service';
@@ -16,6 +16,7 @@ export class AppComponent {
 
   dtOptions: DataTables.Settings = {};
   
+  version: string;
   workouts: Workout[] = [];
   performances: Performance[] = [];
 
@@ -28,6 +29,10 @@ export class AppComponent {
       pagingType: 'full_numbers',
       pageLength: 15
     };
+
+    this.service.getVersionNumber().subscribe(version => {
+      this.version = '[v' + version.version + ']';
+    });
 
     this.service.getAllWorkouts().subscribe(workouts => {
       this.workouts = workouts;

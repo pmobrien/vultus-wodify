@@ -6,7 +6,6 @@ import com.pmobrien.rest.exceptions.UncaughtExceptionMapper;
 import com.pmobrien.rest.mappers.DefaultObjectMapper;
 import com.pmobrien.rest.neo.NeoConnector;
 import com.pmobrien.rest.services.impl.AthleteService;
-import com.pmobrien.rest.services.impl.HelloWorldService;
 import com.pmobrien.rest.services.impl.PerformanceService;
 import com.pmobrien.rest.services.impl.VersionService;
 import com.pmobrien.rest.services.impl.WorkoutService;
@@ -91,7 +90,6 @@ public class Application {
         new ServletHolder(
             new ServletContainer(
                 new ResourceConfig()
-                    .register(HelloWorldService.class)
                     .register(AthleteService.class)
                     .register(PerformanceService.class)
                     .register(WorkoutService.class)

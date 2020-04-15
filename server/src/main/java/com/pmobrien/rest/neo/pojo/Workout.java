@@ -83,13 +83,17 @@ public class Workout extends NeoEntity {
     public void serialize(Workout workout, JsonGenerator generator, SerializerProvider provider) throws IOException {
       generator.writeStartObject();
       
+      writeFields(workout, generator);
+      
+      generator.writeEndObject();
+    }
+    
+    public void writeFields(Workout workout, JsonGenerator generator) throws IOException {
       generator.writeStringField("uuid", workout.getUuid().toString());
       generator.writeStringField("type", workout.getType() == null ? null : workout.getType().name());
       generator.writeStringField("name", workout.getName());
       generator.writeStringField("scheme", workout.getScheme());
       generator.writeStringField("description", workout.getDescription());
-      
-      generator.writeEndObject();
     }
   }
 }

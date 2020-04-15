@@ -26,6 +26,10 @@ export class AppService {
   getAllWorkouts(): Observable<Workout[]> {
     return this.http.get<Workout[]>('/api/workouts');
   }
+
+  getVersionNumber(): Observable<Version> {
+    return this.http.get<Version>('/api/version');
+  }
 }
 
 export interface HelloWorld {
@@ -56,4 +60,8 @@ export interface Workout {
   name?: string;
   scheme?: string;
   description?: string;
+}
+
+export interface Version {
+  version: string;
 }

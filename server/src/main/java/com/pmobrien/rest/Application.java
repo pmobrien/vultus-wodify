@@ -8,6 +8,7 @@ import com.pmobrien.rest.neo.NeoConnector;
 import com.pmobrien.rest.services.impl.AthleteService;
 import com.pmobrien.rest.services.impl.HelloWorldService;
 import com.pmobrien.rest.services.impl.PerformanceService;
+import com.pmobrien.rest.services.impl.VersionService;
 import com.pmobrien.rest.services.impl.WorkoutService;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -94,6 +95,7 @@ public class Application {
                     .register(AthleteService.class)
                     .register(PerformanceService.class)
                     .register(WorkoutService.class)
+                    .register(VersionService.class)
                     .register(DefaultObjectMapper.class)
                     .register(UncaughtExceptionMapper.class)
             )

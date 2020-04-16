@@ -105,23 +105,18 @@ export class AppComponent {
           // just take XXX as sort value
           p.sortHack = p.result.split(' ')[0] + '|' + p.result;
         }
+
+        // TODO rx/rxplus tiebreaker
+        if(p.type === 'RX') {
+          p.sortHack += ' (Rx)';
+        } else if(p.type === 'RX_PLUS') {
+          p.sortHack += ' (Rx+)';
+        } 
       });
 
       this.performances = performances;
       this.rerender();
     });
-  }
-
-  getPerformanceResult(performance: Performance): string {
-    let result = performance.result;
-
-    if(performance.type === 'RX') {
-      result += ' (Rx)';
-    } else if(performance.type === 'RX_PLUS') {
-      result += ' (Rx+)';
-    }
-
-    return result;
   }
 
   rerender(): void {

@@ -10,6 +10,8 @@ import com.pmobrien.rest.neo.pojo.Athlete;
 import com.pmobrien.rest.neo.pojo.NeoEntityFactory;
 import com.pmobrien.rest.neo.pojo.Performance;
 import com.pmobrien.rest.neo.pojo.Workout;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,28 +20,35 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 
 public class CsvReader {
-
-  private static final String RESOURCE_PACKAGE = "com.pmobrien.rest.conf.metcons";
+  
   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("MM/dd/yyyy");
   
   private CsvReader() {}
   
-  public static void loadAll() {
-    Reflections reflections = new Reflections(RESOURCE_PACKAGE, new ResourcesScanner());
-    reflections.getResources(name -> {
-      try {
-        load(CsvReader.class.getClassLoader().getResourceAsStream(RESOURCE_PACKAGE.replace(".", "/") + "/" + name))
-            .forEach(row -> saveRow(row, StringUtils.substringBeforeLast(name, ".")));
-      } catch(IOException | CsvValidationException ex) {
-        ex.printStackTrace(System.out);
+  public static void loadAll(String directory) {
+    // directory format is:
+    //   workouts/    <-- directory should be the path to this
+    //     metcons/
+    //     weightlifting/
+    for(File sub : new File(directory).listFiles()) {
+      final File[] workouts = sub.listFiles();
+      for(int i = 0; i < workouts.length; ++i) {
+        final File workout = workouts[i];
+        
+        try {
+          System.out.print(String.format("Loading [%s of %s] %s.", i + 1, workouts.length, workout.getName()));
+              
+          load(new FileInputStream(workouts[i].getAbsolutePath()))
+              .forEach(row -> saveRow(row, StringUtils.substringBeforeLast(workout.getName(), ".")));
+
+          System.out.println("  Done.");
+        } catch(CsvValidationException | IOException ex) {
+          ex.printStackTrace(System.out);
+        }
       }
-      
-      return true;
-    });
+    }
   }
   
   private static List<MetconRow> load(InputStream csv) throws FileNotFoundException, IOException, CsvValidationException {

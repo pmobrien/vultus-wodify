@@ -119,6 +119,7 @@ public class ApplicationProperties {
       private Boolean boltEnabled;
       private String boltUri;
       private Boolean initializeFromCsv;
+      private String csvDirectory;
       
       public Neo() {}
 
@@ -152,6 +153,14 @@ public class ApplicationProperties {
 
       public void setInitializeFromCsv(Boolean initializeFromCsv) {
         this.initializeFromCsv = initializeFromCsv;
+      }
+
+      public String getCsvDirectory() {
+        return csvDirectory;
+      }
+
+      public void setCsvDirectory(String csvDirectory) {
+        this.csvDirectory = csvDirectory;
       }
     }
   }

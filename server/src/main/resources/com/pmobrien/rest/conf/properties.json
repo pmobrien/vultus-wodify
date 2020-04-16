@@ -13,7 +13,8 @@
       "storage": "server/neo-store",
       "boltEnabled": true,
       "boltUri": "0.0.0.0:17666",
-      "initializeFromCsv": true
+      "initializeFromCsv": true,
+      "csvDirectory": "/Users/patrick/Documents/_code/vultus-wodify-workouts/workouts/"
     }
   }
 }

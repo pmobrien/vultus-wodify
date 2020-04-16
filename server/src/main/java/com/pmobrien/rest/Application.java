@@ -47,8 +47,12 @@ public class Application {
   
   private Application() throws Exception {
     if(Application.getProperties().getConfiguration().getNeo().isInitializeFromCsv()) {
+      if(Strings.isNullOrEmpty(Application.getProperties().getConfiguration().getNeo().getCsvDirectory())) {
+        throw new RuntimeException("neo.csvDirectory must be provided when neo.initializeFromCsv is true");
+      }
+      
       NeoConnector.getInstance().dropDatabase();  // TODO merge in new files rather than just dropping everything
-      CsvReader.loadAll();
+      CsvReader.loadAll(Application.getProperties().getConfiguration().getNeo().getCsvDirectory());
     }
   }
   

@@ -84,42 +84,51 @@ export class AppComponent {
       // so we have to build a sort value and append the display value to the end
       // format is 'sortValue|displayValue'
       performances.map(p => {
+        let val = 0;
+
         if(p.workout.type === 'AMRAP_REPS') {
           // format is 'XXX Reps'
           // just take the XXX as the sort value
-          p.sortHack = p.result.split(' ')[0] + '|' + p.result;
+          val = Number(p.result.split(' ')[0]);
         } else if(p.workout.type === 'AMRAP_ROUNDS_AND_REPS') {
           // format is X + Y
           // multiply X by 1000 and add Y for sort value
           // Y will never be over 1000 so somehing like 5 + 99 won't end up being more than 6 + 2
           let split = p.result.split('+')
-          p.sortHack = (Number(split[0]) * 1000) + Number(split[1]) + '|' + p.result;
+          val = (Number(split[0]) * 1000) + Number(split[1]);
         } else if(p.workout.type === 'EACH_ROUND_FOR_REPS') {
           // format is 'XXX Total Reps'
           // just take the XXX as the sort value
-          p.sortHack = p.result.split(' ')[0] + '|' + p.result;
+          val = Number(p.result.split(' ')[0]);
         } else if(p.workout.type === 'EACH_ROUND_FOR_TIME') {
           // format is 'XX:XX' (minutes:seconds)
           // just convert to seconds for sort value
           let split = p.result.split(':')
-          p.sortHack = ((Number(split[0]) * 60) + Number(split[1])) + '|' + p.result;
+          val = ((Number(split[0]) * 60) + Number(split[1]));
         } else if(p.workout.type === 'TIME') {
           // format is 'XX:XX' (minutes:seconds)
           // just convert to seconds for sort value
           let split = p.result.split(':')
-          p.sortHack = ((Number(split[0]) * 60) + Number(split[1])) + '|' + p.result;
+          val = ((Number(split[0]) * 60) + Number(split[1]));
         } else if(p.workout.type === 'WEIGHT') {
           // format is 'XXX lbs'
           // just take XXX as sort value
-          p.sortHack = p.result.split(' ')[0] + '|' + p.result;
+          val = Number(p.result.split(' ')[0]);
         }
 
-        // TODO rx/rxplus tiebreaker
+        if(p.type === 'RX') {
+          val += 1000000;
+        } else if(p.type === 'RX_PLUS') {
+          val += 2000000;
+        }
+
+        p.sortHack = val + '|' + p.result;
+        
         if(p.type === 'RX') {
           p.sortHack += ' (Rx)';
         } else if(p.type === 'RX_PLUS') {
           p.sortHack += ' (Rx+)';
-        } 
+        }
       });
 
       this.performances = performances;

@@ -2,7 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 import { AppService } from './app.service';
 import { Performance, Workout } from './app.service';
-import { Subject } from 'rxjs';
+import { Observable, Subject, empty } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +18,10 @@ export class AppComponent {
   dtOptions: DataTables.Settings = {};
   
   version: string;
-  workouts: Workout[] = [];
+  workouts: Observable<Workout[]> = empty();
   performances: Performance[] = [];
+
+  selectedWorkoutUuid: string;
 
   dtTrigger: Subject<any> = new Subject();
 
@@ -48,25 +51,29 @@ export class AppComponent {
       this.version = '[v' + version.version + ']';
     });
 
-    this.service.getAllWorkouts().subscribe(workouts => {
-      this.workouts = workouts;
+    this.workouts = this.service.getAllWorkouts()
+      .pipe(
+        map(workouts => {
+          workouts.sort((one: Workout, two: Workout) => {
+            if(one.name < two.name) {
+              return -1;
+            } else if(one.name > two.name) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
 
-      this.workouts.sort((one: Workout, two: Workout) => {
-        if(one.name < two.name) {
-          return -1;
-        } else if(one.name > two.name) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-
-      this.getPerformancesByWorkoutId(workouts[0].uuid);
-    });
+          this.selectedWorkoutUuid = workouts[0].uuid;
+          this.onWorkoutChange({ uuid: this.selectedWorkoutUuid });
+      
+          return workouts;
+        })
+      );
   }
 
-  onWorkoutChange(uuid: string): void {
-    this.getPerformancesByWorkoutId(uuid);
+  onWorkoutChange($event): void {
+    this.getPerformancesByWorkoutId($event.uuid);
   }
 
   getPerformancesByWorkoutId(uuid: string) {

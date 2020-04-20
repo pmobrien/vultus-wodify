@@ -116,12 +116,6 @@ export class AppComponent {
           val = Number(p.result.split(' ')[0]);
         }
 
-        if(p.type === 'RX') {
-          val += 1000000;
-        } else if(p.type === 'RX_PLUS') {
-          val += 2000000;
-        }
-
         p.sortHack = val + '|' + p.result;
         
         if(p.type === 'RX') {

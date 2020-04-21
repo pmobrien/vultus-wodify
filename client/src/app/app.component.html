@@ -21,9 +21,52 @@
 </div>
 
 <div class="row mt-4">
-  <div class="col-md-2"></div>
+  <div class="col-md-4"></div>
 
-  <div class="col-md-8">
+  <div class="col-md-4 center-text">
+    <div class="btn-group btn-block" role="group" aria-label="Views">
+      <button
+        id="athleteButton"
+        type="button"
+        class="btn btn-secondary"
+        (click)=onViewTypeClick($event)
+        [ngClass]="{ 'active': isAthleteView() }">
+        Athlete View
+      </button>
+      <button
+        id="leaderboardButton"
+        type="button"
+        class="btn btn-secondary"
+        (click)=onViewTypeClick($event)
+        [ngClass]="{ 'active': isLeaderboardView() }">
+        Leaderboard View
+      </button>
+    </div>
+  </div>
+
+  <div class="col-md-4"></div>
+</div>
+
+<div *ngIf="isAthleteView()" class="row mt-4">
+  <div class="col-md-4"></div>
+
+  <div class="col-md-4">
+    <ng-select
+      [items]="athletes | async"
+      bindLabel="name"
+      bindValue="uuid"
+      [(ngModel)]="selectedAthleteUuid"
+      (change)="onAthleteChange($event)">
+    </ng-select>
+  </div>
+  
+  <div class="col-md-4"></div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-4"></div>
+
+  <div class="col-md-4">
     <ng-select
       [items]="workouts | async"
       bindLabel="name"
@@ -33,7 +76,7 @@
     </ng-select>
   </div>
   
-  <div class="col-md-2"></div>
+  <div class="col-md-4"></div>
 </div>
 
 <div class="row mt-4">

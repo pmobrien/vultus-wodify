@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { DataTableDirective, DataTablesModule } from 'angular-datatables';
+import { DataTableDirective } from 'angular-datatables';
 import { AppService } from './app.service';
-import { Performance, Workout } from './app.service';
+import { Athlete, Performance, Workout } from './app.service';
 import { Observable, Subject, empty } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -18,10 +18,15 @@ export class AppComponent {
   dtOptions: DataTables.Settings = {};
   
   version: string;
+
+  athletes: Observable<Athlete[]> = empty();
   workouts: Observable<Workout[]> = empty();
   performances: Performance[] = [];
 
+  selectedAthleteUuid: string;
   selectedWorkoutUuid: string;
+
+  view: ViewType = ViewType.athlete;
 
   dtTrigger: Subject<any> = new Subject();
 
@@ -52,10 +57,44 @@ export class AppComponent {
       this.version = '[v' + version.version + ']';
     });
 
-    this.workouts = this.service.getAllWorkouts()
+    if(this.view === ViewType.athlete) {
+      this.initializeAthletes();
+    } else if(this.view === ViewType.leaderboard) {
+      this.workouts = this.service.getAllWorkouts()
+        .pipe(
+          map(workouts => {
+            workouts.sort((one: Workout, two: Workout) => {
+              if(one.name < two.name) {
+                return -1;
+              } else if(one.name > two.name) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
+
+            this.selectedWorkoutUuid = workouts[0].uuid;
+            this.onWorkoutChange({ uuid: this.selectedWorkoutUuid });
+        
+            return workouts;
+          })
+        );
+    }
+  }
+
+  onAthleteChange($event): void {
+    console.log($event);
+  }
+
+  onWorkoutChange($event): void {
+    this.getPerformancesByWorkoutId($event.uuid);
+  }
+
+  initializeAthletes(): void {
+    this.athletes = this.service.getAllAthletes()
       .pipe(
-        map(workouts => {
-          workouts.sort((one: Workout, two: Workout) => {
+        map(athletes => {
+          athletes.sort((one: Workout, two: Workout) => {
             if(one.name < two.name) {
               return -1;
             } else if(one.name > two.name) {
@@ -65,16 +104,12 @@ export class AppComponent {
             }
           });
 
-          this.selectedWorkoutUuid = workouts[0].uuid;
-          this.onWorkoutChange({ uuid: this.selectedWorkoutUuid });
-      
-          return workouts;
+          this.selectedAthleteUuid = athletes[0].uuid;
+          this.onAthleteChange({ uuid: this.selectedAthleteUuid });
+
+          return athletes;
         })
       );
-  }
-
-  onWorkoutChange($event): void {
-    this.getPerformancesByWorkoutId($event.uuid);
   }
 
   getPerformancesByWorkoutId(uuid: string) {
@@ -130,6 +165,23 @@ export class AppComponent {
     });
   }
 
+  onViewTypeClick($event): void {
+    if($event.target.id === 'athleteButton') {
+      this.view = ViewType.athlete;
+      this.initializeAthletes();
+    } else if($event.target.id === 'leaderboardButton') {
+      this.view = ViewType.leaderboard;
+    } 
+  }
+
+  isAthleteView(): boolean {
+    return this.view === ViewType.athlete;
+  }
+
+  isLeaderboardView(): boolean {
+    return this.view === ViewType.leaderboard;
+  }
+
   rerender(): void {
     if(this.dtElement.dtInstance) {
       this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -140,4 +192,9 @@ export class AppComponent {
       this.dtTrigger.next();
     }
   }
+}
+
+enum ViewType {
+  athlete,
+  leaderboard
 }

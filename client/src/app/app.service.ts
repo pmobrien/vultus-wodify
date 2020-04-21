@@ -23,8 +23,12 @@ export class AppService {
     }
   }
 
-  getAllWorkouts(): Observable<Workout[]> {
-    return this.http.get<Workout[]>('/api/workouts');
+  getAllWorkouts(athleteUuid?: string): Observable<Workout[]> {
+    if(athleteUuid) {
+      return this.getWorkoutsForAthlete(athleteUuid);
+    } else {
+      return this.http.get<Workout[]>('/api/workouts');
+    }
   }
 
   getWorkoutsForAthlete(athleteUuid: string): Observable<Workout[]> {

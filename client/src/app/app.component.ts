@@ -69,28 +69,7 @@ export class AppComponent {
   }
 
   doOnAthleteChange(athleteUuid: string) {
-    this.workouts = this.service.getWorkoutsForAthlete(athleteUuid)
-      .pipe(
-        map(workouts => {
-          workouts.sort((one: Workout, two: Workout) => {
-            if(one.name < two.name) {
-              return -1;
-            } else if(one.name > two.name) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-
-          if(!this.selectedWorkoutUuid) {
-            this.selectedWorkoutUuid = workouts[0].uuid;
-          }
-          
-          this.doOnWorkoutChange(this.selectedWorkoutUuid);
-      
-          return workouts;
-        })
-      );
+    this.fetchWorkouts(athleteUuid);
   }
 
   onWorkoutChange($event): void {
@@ -130,8 +109,8 @@ export class AppComponent {
       );
   }
 
-  fetchWorkouts(): void {
-    this.workouts = this.service.getAllWorkouts()
+  fetchWorkouts(athleteUuid?: string): void {
+    this.workouts = this.service.getAllWorkouts(athleteUuid)
       .pipe(
         map(workouts => {
           workouts.sort((one: Workout, two: Workout) => {
@@ -144,7 +123,14 @@ export class AppComponent {
             }
           });
 
-          if(!this.selectedWorkoutUuid) {
+          let found: boolean = false;
+          for(var i = 0; i < workouts.length; ++i) {
+            if(workouts[i].uuid === this.selectedWorkoutUuid) {
+              found = true;
+            }
+          }
+
+          if(!this.selectedWorkoutUuid || !found) {
             this.selectedWorkoutUuid = workouts[0].uuid;
           }
           

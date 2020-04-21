@@ -54,7 +54,7 @@ export class AppComponent {
     };
 
     this.service.getVersionNumber().subscribe(version => {
-      this.version = '[v' + version.version + ']';
+      this.version = version.version;
     });
 
     if(this.view === ViewType.athlete) {

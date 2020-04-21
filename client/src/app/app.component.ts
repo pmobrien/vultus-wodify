@@ -154,37 +154,76 @@ export class AppComponent {
           // format is 'XXX Reps'
           // just take the XXX as the sort value
           val = Number(p.result.split(' ')[0]);
+
+          // adjust for rx/rx+
+          // rx+ is always higher than rx is always higher than scaled...
+          // TODO deduplicate this
+          if(p.type === 'RX') {
+            val += 1000000;
+          } else if(p.type === 'RX_PLUS') {
+            val += 2000000;
+          }
         } else if(p.workout.type === 'AMRAP_ROUNDS_AND_REPS') {
           // format is X + Y
           // multiply X by 1000 and add Y for sort value
           // Y will never be over 1000 so somehing like 5 + 99 won't end up being more than 6 + 2
           let split = p.result.split('+')
           val = (Number(split[0]) * 1000) + Number(split[1]);
+
+          if(p.type === 'RX') {
+            val += 1000000;
+          } else if(p.type === 'RX_PLUS') {
+            val += 2000000;
+          }
         } else if(p.workout.type === 'EACH_ROUND_FOR_REPS') {
           // format is 'XXX Total Reps'
           // just take the XXX as the sort value
           val = Number(p.result.split(' ')[0]);
+
+          if(p.type === 'RX') {
+            val += 1000000;
+          } else if(p.type === 'RX_PLUS') {
+            val += 2000000;
+          }
         } else if(p.workout.type === 'EACH_ROUND_FOR_TIME') {
           // format is 'XX:XX' (minutes:seconds)
           // just convert to seconds for sort value
           let split = p.result.split(':')
           val = ((Number(split[0]) * 60) + Number(split[1]));
+
+          // for time, must be subtracted
+          if(p.type === 'RX') {
+            val -= 1000000;
+          } else if(p.type === 'RX_PLUS') {
+            val -= 2000000;
+          }
         } else if(p.workout.type === 'TIME') {
           // format is 'XX:XX' (minutes:seconds)
           // just convert to seconds for sort value
           let split = p.result.split(':')
           val = ((Number(split[0]) * 60) + Number(split[1]));
+
+          // for time, must be subtracted
+          if(p.type === 'RX') {
+            val -= 1000000;
+          } else if(p.type === 'RX_PLUS') {
+            val -= 2000000;
+          }
         } else if(p.workout.type === 'WEIGHT') {
           // format is 'XXX lbs'
           // just take XXX as sort value
           val = Number(p.result.split(' ')[0]);
+
+          if(p.type === 'RX') {
+            val += 1000000;
+          } else if(p.type === 'RX_PLUS') {
+            val += 2000000;
+          }
         }
 
         // TODO amrap - rounds
 
         p.sortHack = val + '|' + p.result;
-        
-        // TODO adjust value for rx/rx+
 
         if(p.type === 'RX') {
           p.sortHack += ' (Rx)';

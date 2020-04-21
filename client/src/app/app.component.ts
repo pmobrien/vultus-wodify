@@ -180,6 +180,8 @@ export class AppComponent {
           val = Number(p.result.split(' ')[0]);
         }
 
+        // TODO amrap - rounds
+
         p.sortHack = val + '|' + p.result;
         
         // TODO adjust value for rx/rx+

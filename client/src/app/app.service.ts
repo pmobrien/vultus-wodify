@@ -15,12 +15,24 @@ export class AppService {
     return this.http.get<Performance[]>('/api/performances');
   }
 
-  getPerformancesByWorkoutUuid(uuid: string): Observable<Performance[]> {
-    return this.http.get<Performance[]>('/api/workouts/' + uuid + '/performances');
+  getPerformancesByWorkoutUuid(workoutUuid: string, athleteUuid?: string): Observable<Performance[]> {
+    if(athleteUuid) {
+      return this.getPerformancesForAthleteByWorkout(athleteUuid, workoutUuid);
+    } else {
+      return this.http.get<Performance[]>('/api/workouts/' + workoutUuid + '/performances');
+    }
   }
 
   getAllWorkouts(): Observable<Workout[]> {
     return this.http.get<Workout[]>('/api/workouts');
+  }
+
+  getWorkoutsForAthlete(athleteUuid: string): Observable<Workout[]> {
+    return this.http.get<Workout[]>('/api/athletes/' + athleteUuid + '/workouts')
+  }
+
+  getPerformancesForAthleteByWorkout(athleteUuid: string, workoutUuid: string): Observable<Performance[]> {
+    return this.http.get<Performance[]>('/api/athletes/' + athleteUuid + '/workouts/' + workoutUuid + '/performances');
   }
 
   getVersionNumber(): Observable<Version> {

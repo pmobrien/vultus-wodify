@@ -47,36 +47,56 @@
   <div class="col-md-4"></div>
 </div>
 
-<div *ngIf="isAthleteView()" class="row mt-4">
-  <div class="col-md-4"></div>
+<div *ngIf="isAthleteView()">
+  <div class="row mt-4">
+    <div class="col-md-4"></div>
 
-  <div class="col-md-4">
-    <ng-select
-      [items]="athletes | async"
-      bindLabel="name"
-      bindValue="uuid"
-      [(ngModel)]="selectedAthleteUuid"
-      (change)="onAthleteChange($event)">
-    </ng-select>
+    <div class="col-md-4 font-weight-bold">Select Athlete:</div>
+
+    <div class="col-md-4"></div>
   </div>
-  
-  <div class="col-md-4"></div>
+
+  <div class="row">
+    <div class="col-md-4"></div>
+
+    <div class="col-md-4">
+      <ng-select
+        [items]="athletes | async"
+        bindLabel="name"
+        bindValue="uuid"
+        [(ngModel)]="selectedAthleteUuid"
+        (change)="onAthleteChange($event)">
+      </ng-select>
+    </div>
+    
+    <div class="col-md-4"></div>
+  </div>
 </div>
 
-<div class="row mt-4">
-  <div class="col-md-4"></div>
+<div>
+  <div class="row mt-4">
+    <div class="col-md-4"></div>
 
-  <div class="col-md-4">
-    <ng-select
-      [items]="workouts | async"
-      bindLabel="name"
-      bindValue="uuid"
-      [(ngModel)]="selectedWorkoutUuid"
-      (change)="onWorkoutChange($event)">
-    </ng-select>
+    <div class="col-md-4 font-weight-bold">Select Workout:</div>
+
+    <div class="col-md-4"></div>
   </div>
-  
-  <div class="col-md-4"></div>
+
+  <div class="row">
+    <div class="col-md-4"></div>
+
+    <div class="col-md-4">
+      <ng-select
+        [items]="workouts | async"
+        bindLabel="name"
+        bindValue="uuid"
+        [(ngModel)]="selectedWorkoutUuid"
+        (change)="onWorkoutChange($event)">
+      </ng-select>
+    </div>
+    
+    <div class="col-md-4"></div>
+  </div>
 </div>
 
 <div class="row mt-4">

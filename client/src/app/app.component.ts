@@ -58,39 +58,54 @@ export class AppComponent {
     });
 
     if(this.view === ViewType.athlete) {
-      this.initializeAthletes();
+      this.fetchAthletes();
     } else if(this.view === ViewType.leaderboard) {
-      this.workouts = this.service.getAllWorkouts()
-        .pipe(
-          map(workouts => {
-            workouts.sort((one: Workout, two: Workout) => {
-              if(one.name < two.name) {
-                return -1;
-              } else if(one.name > two.name) {
-                return 1;
-              } else {
-                return 0;
-              }
-            });
-
-            this.selectedWorkoutUuid = workouts[0].uuid;
-            this.onWorkoutChange({ uuid: this.selectedWorkoutUuid });
-        
-            return workouts;
-          })
-        );
+      this.fetchWorkouts();
     }
   }
 
   onAthleteChange($event): void {
-    console.log($event);
+    this.doOnAthleteChange($event.uuid);
+  }
+
+  doOnAthleteChange(athleteUuid: string) {
+    this.workouts = this.service.getWorkoutsForAthlete(athleteUuid)
+      .pipe(
+        map(workouts => {
+          workouts.sort((one: Workout, two: Workout) => {
+            if(one.name < two.name) {
+              return -1;
+            } else if(one.name > two.name) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+
+          if(!this.selectedWorkoutUuid) {
+            this.selectedWorkoutUuid = workouts[0].uuid;
+          }
+          
+          this.doOnWorkoutChange(this.selectedWorkoutUuid);
+      
+          return workouts;
+        })
+      );
   }
 
   onWorkoutChange($event): void {
-    this.getPerformancesByWorkoutId($event.uuid);
+    this.doOnWorkoutChange($event.uuid);
   }
 
-  initializeAthletes(): void {
+  doOnWorkoutChange(workoutUuid: string): void {
+    if(this.view === ViewType.athlete) {
+      this.getPerformancesByWorkoutId(workoutUuid, this.selectedAthleteUuid);
+    } else {
+      this.getPerformancesByWorkoutId(workoutUuid);
+    }
+  }
+
+  fetchAthletes(): void {
     this.athletes = this.service.getAllAthletes()
       .pipe(
         map(athletes => {
@@ -104,16 +119,44 @@ export class AppComponent {
             }
           });
 
-          this.selectedAthleteUuid = athletes[0].uuid;
-          this.onAthleteChange({ uuid: this.selectedAthleteUuid });
+          if(!this.selectedAthleteUuid) {
+            this.selectedAthleteUuid = athletes[0].uuid;
+          }
+          
+          this.doOnAthleteChange(this.selectedAthleteUuid);
 
           return athletes;
         })
       );
   }
 
-  getPerformancesByWorkoutId(uuid: string) {
-    this.service.getPerformancesByWorkoutUuid(uuid).subscribe(performances => {
+  fetchWorkouts(): void {
+    this.workouts = this.service.getAllWorkouts()
+      .pipe(
+        map(workouts => {
+          workouts.sort((one: Workout, two: Workout) => {
+            if(one.name < two.name) {
+              return -1;
+            } else if(one.name > two.name) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+
+          if(!this.selectedWorkoutUuid) {
+            this.selectedWorkoutUuid = workouts[0].uuid;
+          }
+          
+          this.doOnWorkoutChange(this.selectedWorkoutUuid);
+      
+          return workouts;
+        })
+      );
+  }
+
+  getPerformancesByWorkoutId(workoutUuid: string, athleteUuid?: string) {
+    this.service.getPerformancesByWorkoutUuid(workoutUuid, athleteUuid).subscribe(performances => {
       // need to add in a "sort hack"
       // the table is not properly taking in the full object in the columnDefs object
       // so we have to build a sort value and append the display value to the end
@@ -153,6 +196,8 @@ export class AppComponent {
 
         p.sortHack = val + '|' + p.result;
         
+        // TODO adjust value for rx/rx+
+
         if(p.type === 'RX') {
           p.sortHack += ' (Rx)';
         } else if(p.type === 'RX_PLUS') {
@@ -168,9 +213,10 @@ export class AppComponent {
   onViewTypeClick($event): void {
     if($event.target.id === 'athleteButton') {
       this.view = ViewType.athlete;
-      this.initializeAthletes();
+      this.fetchAthletes();
     } else if($event.target.id === 'leaderboardButton') {
       this.view = ViewType.leaderboard;
+      this.fetchWorkouts();
     } 
   }
 

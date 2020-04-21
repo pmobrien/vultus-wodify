@@ -11,6 +11,7 @@ public class Workout extends NeoEntity {
   
   public enum Type {
     AMRAP_REPS("AMRAP - Reps"),
+    AMRAP_ROUNDS("AMRAP - Rounds"),
     AMRAP_ROUNDS_AND_REPS("AMRAP - Rounds and Reps"),
     EACH_ROUND_FOR_REPS("Each Round for For Reps"),
     EACH_ROUND_FOR_TIME("Each Round for For Time"),

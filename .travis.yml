@@ -1,6 +1,4 @@
 language: java
 
-script:
-- npm install -g @angular/cli
-- mvn clean install
+script: npm install -g @angular/cli && mvn clean install
 

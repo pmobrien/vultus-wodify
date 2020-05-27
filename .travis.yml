@@ -1,2 +1,2 @@
-script: nvm use 12.15.0 && npm install -g @angular/cli && mvn clean install
+script: nvm install 12.15.0 && nvm use 12.15.0 && npm install -g @angular/cli && mvn clean install
 

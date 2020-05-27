@@ -1,2 +1,2 @@
-script: npm install -g @angular/cli && mvn clean install
+script: npm install -g npm@12.15.0 && npm install -g @angular/cli && mvn clean install
 

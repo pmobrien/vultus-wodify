@@ -1,5 +1,2 @@
-node_js:
-  - "12.15.0"
-
-script: nvm ls && npm install -g @angular/cli && mvn clean install
+script: nvm use 11.0.0 && npm install -g @angular/cli && mvn clean install
 

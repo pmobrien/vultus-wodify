@@ -1,5 +1,7 @@
 language: java
 
+sudo: required
+
 before_script:
   - npm install -g @angular/cli
 

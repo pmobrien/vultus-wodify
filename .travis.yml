@@ -1,7 +1,5 @@
 language: java
 
-sudo: required
-
 script:
 - npm install -g @angular/cli
 - mvn clean install

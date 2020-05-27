@@ -1,8 +1,8 @@
-matrix:
-  include:
-    - language: java
-    - language: node.js
-      node_js: "12.15.0"
-      before_script:
-        - npm install -g @angular/cli
+language: java
+
+sudo: required
+
+script:
+- npm install -g @angular/cli
+- mvn clean install
 

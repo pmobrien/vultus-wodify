@@ -84,6 +84,13 @@
       <artifactId>neo4j-bolt</artifactId>
       <version>${neo4j.version}</version>
     </dependency>
+    
+    <!-- graphql -->
+    <dependency>
+      <groupId>com.graphql-java</groupId>
+      <artifactId>graphql-java</artifactId>
+      <version>14.0</version>
+    </dependency>
 
     <!-- other -->
     <dependency>
